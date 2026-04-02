@@ -61,13 +61,7 @@ export default function Header() {
               </a>
             ))}
 
-            <a
-              href="#projects"
-              onClick={() => setOpen(false)}
-              className="mt-2 rounded-xl bg-primary px-4 py-3 text-center text-sm font-semibold text-primary-foreground transition hover:opacity-90"
-            >
-              Ver proyectos
-            </a>
+             <DownloadCVButton/>
           </div>
         </div>
       )}
