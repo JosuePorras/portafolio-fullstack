@@ -9,7 +9,7 @@ export type ContactPayload = {
 
 export class ContactService {
   static async sendMessage(payload: ContactPayload) {
-    const response = await httpClient.post("/api/contact", payload);
+    const response = await httpClient.post("/contact", payload);
     return response.data;
   }
 }

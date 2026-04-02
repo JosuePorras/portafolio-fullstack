@@ -5,7 +5,7 @@ import { getToken, clearToken } from "@/services/auth/token.store";
 import { handleHttpError } from "./http.errors";
 
 const API_URL =
-  process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000";
+  process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api";
 
 export const httpClient: AxiosInstance = axios.create({
   baseURL: API_URL,
