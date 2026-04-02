@@ -1,0 +1,121 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model education {
+  id             BigInt    @id @default(autoincrement())
+  institution    String    @db.VarChar(150)
+  degree         String    @db.VarChar(150)
+  field_of_study String?   @db.VarChar(150)
+  description    String?
+  start_date     DateTime? @db.Date
+  end_date       DateTime? @db.Date
+  current_study  Boolean   @default(false)
+  sort_order     Int       @default(0)
+  created_at     DateTime  @default(now()) @db.Timestamp(6)
+  updated_at     DateTime  @default(now()) @db.Timestamp(6)
+
+  @@index([sort_order], map: "idx_education_sort_order")
+}
+
+model experiences {
+  id              BigInt    @id @default(autoincrement())
+  company         String    @db.VarChar(150)
+  role            String    @db.VarChar(120)
+  location        String?   @db.VarChar(120)
+  employment_type String?   @db.VarChar(50)
+  description     String?
+  start_date      DateTime  @db.Date
+  end_date        DateTime? @db.Date
+  current_job     Boolean   @default(false)
+  sort_order      Int       @default(0)
+  created_at      DateTime  @default(now()) @db.Timestamp(6)
+  updated_at      DateTime  @default(now()) @db.Timestamp(6)
+
+  @@index([sort_order], map: "idx_experiences_sort_order")
+}
+
+model messages {
+  id         BigInt   @id @default(autoincrement())
+  full_name  String   @db.VarChar(120)
+  email      String   @db.VarChar(150)
+  subject    String   @db.VarChar(180)
+  message    String
+  is_read    Boolean  @default(false)
+  created_at DateTime @default(now()) @db.Timestamp(6)
+
+  @@index([created_at], map: "idx_messages_created_at")
+  @@index([is_read], map: "idx_messages_is_read")
+}
+
+model project_technologies {
+  id            BigInt       @id @default(autoincrement())
+  project_id    BigInt
+  technology_id BigInt
+  created_at    DateTime     @default(now()) @db.Timestamp(6)
+  projects      projects     @relation(fields: [project_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_project_technologies_project")
+  technologies  technologies @relation(fields: [technology_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk_project_technologies_technology")
+
+  @@unique([project_id, technology_id], map: "uq_project_technology")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model projects {
+  id                   BigInt                 @id @default(autoincrement())
+  title                String                 @db.VarChar(150)
+  slug                 String                 @unique @db.VarChar(160)
+  short_description    String                 @db.VarChar(255)
+  full_description     String?
+  image_url            String?
+  github_url           String?
+  demo_url             String?
+  featured             Boolean                @default(false)
+  status               String                 @default("draft") @db.VarChar(20)
+  sort_order           Int                    @default(0)
+  created_at           DateTime               @default(now()) @db.Timestamp(6)
+  updated_at           DateTime               @default(now()) @db.Timestamp(6)
+  project_technologies project_technologies[]
+
+  @@index([featured], map: "idx_projects_featured")
+  @@index([sort_order], map: "idx_projects_sort_order")
+  @@index([status], map: "idx_projects_status")
+}
+
+model social_links {
+  id         BigInt   @id @default(autoincrement())
+  platform   String   @unique(map: "uq_social_links_platform") @db.VarChar(50)
+  url        String
+  icon_name  String?  @db.VarChar(80)
+  active     Boolean  @default(true)
+  sort_order Int      @default(0)
+  created_at DateTime @default(now()) @db.Timestamp(6)
+
+  @@index([sort_order], map: "idx_social_links_sort_order")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model technologies {
+  id                   BigInt                 @id @default(autoincrement())
+  name                 String                 @unique @db.VarChar(80)
+  icon_url             String?
+  category             String                 @db.VarChar(30)
+  created_at           DateTime               @default(now()) @db.Timestamp(6)
+  project_technologies project_technologies[]
+}
+
+model users {
+  id            BigInt   @id @default(autoincrement())
+  full_name     String   @db.VarChar(120)
+  email         String   @unique @db.VarChar(150)
+  password_hash String
+  role          String   @default("admin") @db.VarChar(30)
+  is_active     Boolean  @default(true)
+  created_at    DateTime @default(now()) @db.Timestamp(6)
+  updated_at    DateTime @default(now()) @db.Timestamp(6)
+}
