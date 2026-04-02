@@ -41,7 +41,7 @@ export const projects: ProjectItem[] = [
       { name: "Next.js", image: "/assets/images/tech/nextjs.svg", invert: true },
       { name: "Node.js", image: "/assets/images/tech/nodejs.svg" },
       { name: "Prisma", image: "/assets/images/tech/prisma.svg", invert: true },
-      { name: "Mysql", image: "/assets/images/tech/mysql.svg" },
+      { name: "MySQL", image: "/assets/images/tech/mysql.svg" },
       { name: "Tailwind CSS", image: "/assets/images/tech/tailwind.svg" },
       { name: "GitHub", image: "/assets/images/tech/github.svg",invert:true },
       { name: "Electron", image: "/assets/images/tech/electron.svg",invert:true },
@@ -67,7 +67,7 @@ export const projects: ProjectItem[] = [
   {
     title: "Kánux",
     description:
-      "Proyecto académico-técnico orientado a la búsqueda de oportunidade para las personas que quieren demostrar sus habilidades ténicas. Participé en el área de backend, trabajando la lógica del servidor, la base de datos y la estructura general del sistema.",
+      "Proyecto académico-técnico orientado a la búsqueda de oportunidades para las personas que quieren demostrar sus habilidades técnicas. Participé en el área de backend, trabajando la lógica del servidor, la base de datos y la estructura general del sistema.",
     image: "/assets/images/projects/kanux.webp",
     role: "Fullstack Developer",
     status: "Finalizado",
@@ -104,7 +104,7 @@ export const projects: ProjectItem[] = [
   },
 
   {
-    title: "Sistena de inventario - Tienda Zair y Snayder",
+    title: "Sistema de inventario - Tienda Zair y Snayder",
     description:
       "Proyecto orientado a la gestión de inventario para una zapatería/tienda. Participé en el diseño e implementación de stored procedures para la base de datos, así como en el desarrollo de la lógica de negocio del sistema y la construcción de algunas vistas dentro de la aplicación.",
     image: "/assets/images/projects/sys.webp",
@@ -113,7 +113,7 @@ export const projects: ProjectItem[] = [
     year: "2025",
     technologies: [
       { name: "Node.js", image: "/assets/images/tech/nodejs.svg" },
-      { name: "Mysql", image: "/assets/images/tech/mysql.svg" },
+      { name: "MySQL", image: "/assets/images/tech/mysql.svg" },
       { name: "GitHub", image: "/assets/images/tech/github.svg", invert: true },
       { name: "Jira", image: "/assets/images/tech/jira.svg" },
       { name: "Js", image: "/assets/images/tech/js.svg" },
@@ -157,7 +157,7 @@ export const projects: ProjectItem[] = [
     year: "2025",
     technologies: [
       { name: "Laravel", image: "/assets/images/tech/laravel.svg" },
-      { name: "Mysql", image: "/assets/images/tech/mysql.svg" },
+      { name: "MySQL", image: "/assets/images/tech/mysql.svg" },
       { name: "GitHub", image: "/assets/images/tech/github.svg", invert: true },
       { name: "HTML", image: "/assets/images/tech/html.svg" },
       { name: "CSS", image: "/assets/images/tech/css.svg" },
