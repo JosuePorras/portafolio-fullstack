@@ -9,44 +9,43 @@ interface ApiErrorResponse {
   message?: string | string[];
   error?: string | string[];
   statusCode?: number;
-  errors?: FieldError[] | Record<string, string[]>;
+  errors?: FieldError[] | Record<string, string[] | string>;
 }
 
 export const handleHttpError = (error: AxiosError): string[] => {
   if (error.code === "ECONNABORTED") {
-    return ["Request timeout."];
+    return ["La solicitud tardó demasiado."];
   }
 
-  if (!error.response) {
-    return ["Network error. Server unreachable."];
+  const response = error.response;
+  const data = response?.data as ApiErrorResponse | undefined;
+
+  if (!response || !data) {
+    return ["Error de red. No se pudo conectar con el servidor."];
   }
 
-  const { status, data } = error.response;
-  const apiError = data as ApiErrorResponse;
+  const { status } = response;
   const messages: string[] = [];
 
-  // message
-  if (apiError.message) {
-    if (typeof apiError.message === "string") {
-      messages.push(apiError.message);
-    } else if (Array.isArray(apiError.message)) {
-      messages.push(...apiError.message);
+  if (data.message) {
+    if (typeof data.message === "string") {
+      messages.push(data.message);
+    } else if (Array.isArray(data.message)) {
+      messages.push(...data.message);
     }
   }
 
-  // error fallback
-  if (apiError.error && messages.length === 0) {
-    if (typeof apiError.error === "string") {
-      messages.push(apiError.error);
-    } else if (Array.isArray(apiError.error)) {
-      messages.push(...apiError.error);
+  if (data.error && messages.length === 0) {
+    if (typeof data.error === "string") {
+      messages.push(data.error);
+    } else if (Array.isArray(data.error)) {
+      messages.push(...data.error);
     }
   }
 
-  // errors detallados
-  if (apiError.errors) {
-    if (Array.isArray(apiError.errors)) {
-      apiError.errors.forEach((err) => {
+  if (data.errors) {
+    if (Array.isArray(data.errors)) {
+      data.errors.forEach((err) => {
         if (!err) return;
 
         if (typeof err.message === "string") {
@@ -56,7 +55,7 @@ export const handleHttpError = (error: AxiosError): string[] => {
         }
       });
     } else {
-      Object.values(apiError.errors).forEach((val) => {
+      Object.values(data.errors).forEach((val) => {
         if (Array.isArray(val)) {
           messages.push(...val);
         } else if (typeof val === "string") {
@@ -67,8 +66,13 @@ export const handleHttpError = (error: AxiosError): string[] => {
   }
 
   if (messages.length === 0) {
-    messages.push(`Unexpected error (${status})`);
+    if (status === 400) return ["Solicitud inválida."];
+    if (status === 401) return ["No autorizado."];
+    if (status === 403) return ["No tienes permisos para realizar esta acción."];
+    if (status === 404) return ["Recurso no encontrado."];
+    if (status === 500) return ["Error interno del servidor."];
+    return [`Error inesperado (${status})`];
   }
 
-  return messages;
+  return [...new Set(messages)];
 };

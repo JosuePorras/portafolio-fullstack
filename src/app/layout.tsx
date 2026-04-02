@@ -4,6 +4,7 @@ import Footer from "@/components/layout/Footer";
 import { Geist } from "next/font/google";
 import { cn } from "@/lib/utils";
 import BackgroundOrbs from "@/components/ui/backgroundOrb";
+import AppToaster from "@/components/ui/sonner";
 
 const geist = Geist({
   subsets: ["latin"],
@@ -27,6 +28,7 @@ export default function RootLayout({
         <div className="relative z-10">
           <Header />
           {children}
+          <AppToaster/>
           <Footer />
         </div>
       </body>
